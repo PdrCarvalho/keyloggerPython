@@ -2,6 +2,7 @@ import socket
 import threading
 import socketserver
 from pymongo import MongoClient
+
 lista_sockets = []
 lista_adresses = []
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -30,6 +31,7 @@ def tratarCliente(clientsocket, adress,collection):
             collection.insert_one({"adress": adress,"digitado": digitado})
             # for i in range(0, len(lista_sockets)):
             #     disconnectMsg = "disconnect;" + str(index) + "\0"
+
 def main():
     while True:
         clientsocket, adress = s.accept()
@@ -39,4 +41,5 @@ def main():
         t = threading.Thread(target=tratarCliente,args=(clientsocket, adress,collection))
         t.daemon = True # vai acabar a thread quando fecharmos o programa
         t.start()
+
 main()
